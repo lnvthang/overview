@@ -1,0 +1,35 @@
+1/ sudo mkdir -p /var/www/builde ( build là tên file bất kỳ )
+
+2/ sudo cp -r /build-profile/build /var/www/  ( copy toàn bộ source vào thư mục làm việc của Nginx)
+
+3)sudo chown -R www-data:www-data /var/www/build 
+
+4)sudo chmod -R 755 /var/www/build
+
+
+5) sudo nano /etc/nginx/sites-available/build ( Tạo một server block mới cho site)
+
+6) thêm cấu hình 
+server {
+    listen 80;
+    server_name 54.147.46.10;
+
+    root /var/www/build;
+    index index.html;
+
+    location / {
+        try_files $uri $uri/ =404;
+    }
+}
+
+7)Tạo symlink từ sites-available đến sites-enabled:
+
+sudo ln -s /etc/nginx/sites-available/build /etc/nginx/sites-enabled/ 
+
+8) Kiểm tra cấu hình Nginx ( nếu không có lỗi gì hết thì mới chạy bước kế tiếp)
+
+sudo nginx -t
+
+9) sudo systemctl restart nginx
+
+10) https://54.147.46.10/
